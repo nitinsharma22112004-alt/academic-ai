@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: academic-ai-api
+    runtime: python
+    plan: starter
+    rootDir: backend
+    buildCommand: pip install --no-cache-dir -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.7
+      - key: CHROMA_DIR
+        value: /var/data/chroma_db
+      - key: UPLOADS_DIR
+        value: /var/data/uploads
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: qwen/qwen3.8-27b
+    disk:
+      name: academic-ai-data
+      mountPath: /var/data
+      sizeGB: 1

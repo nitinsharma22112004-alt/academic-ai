@@ -235,3 +235,15 @@ When presenting this project to your college viva panel, here is how you can exp
 > If a student asks something not in the PDF (e.g., "Who won the 2024 cricket world cup?"), the system refuses to guess and informs them that the answer was not found in their notes.
 
 # academic-ai
+
+## Deploy
+
+The frontend is deployed to Vercel and the FastAPI backend to Render. The backend uses a Render persistent disk for uploaded PDFs and the Chroma database.
+
+1. Push the project source to GitHub. `.gitignore` excludes `.env` files, local uploads, Chroma data, and build artifacts.
+2. In Render, create a Blueprint from the repository root. The root `render.yaml` creates the API service and persistent disk. Set `GROQ_API_KEY` when prompted; never commit it.
+3. In Vercel, import the same repository and set the project Root Directory to `frontend`.
+4. Set Vercel's `VITE_API_URL` environment variable to the deployed Render API URL, without a trailing slash, then deploy or redeploy.
+5. Check `<Render API URL>/health` and confirm `available_providers.groq` is `true`.
+
+The Render service uses a paid plan because persistent disks are not available on the free web-service plan. Deploying only the Vercel frontend will not enable PDF upload or question answering.
